@@ -47,10 +47,23 @@ const btn_scroll_to = document.querySelector('.btn--scroll-to');
 const section1 = document.querySelector('#section--1');
 
 btn_scroll_to.addEventListener('click',(e)=>{
-const s1coords = section1.getBoundingClientRect();
-  console.log(s1coords);
-  // console.log(s1coords,pageYOffset,pageXOffset);
-  window.scrollTo(s1coords.x,s1coords.y);
+// const s1coords = section1.getBoundingClientRect();
+//   console.log(s1coords);
+//   // console.log(s1coords,pageYOffset,pageXOffset);
+//   window.scrollTo(s1coords.x,s1coords.y);
+  section1.scrollIntoView({behavior:'smooth'})
 })
 
 // console.log(document.documentElement.clientHeight,document.documentElement.clientWidth);
+
+// const h1 = document.querySelector('h1');
+// const h1Color =getComputedStyle(h1).color;
+// h1.addEventListener('mouseenter',function(e){
+//   this.style.color = 'red';
+// })
+// h1.onmouseleave = function(e){
+//   this.style.color = h1Color;
+// }
+// h1.addEventListener('mouseup',()=>{
+//   alert('You can\'t copy it!')
+// },true)
