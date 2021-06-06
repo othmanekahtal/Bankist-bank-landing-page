@@ -34,18 +34,6 @@ document.addEventListener('keydown', function(e) {
     closeModal();
   }
 });
-message.classList.add('cookie-message');
-message.innerHTML = 'We use cookie for improved functionality and analytics.<button class="btn btn--close-cookie">Go it!</button>';
-header.append(message);
-document.querySelector('.btn--close-cookie').addEventListener('click', function() {
-  message.remove();
-});
-
-message.style.width = '100%';
-// console.log(getComputedStyle(message));
-// console.log(document,document.documentElement);
-// document.documentElement.style.setProperty('--color-primary','orangered');
-// console.log(header.dataset);
 
 
 btn_scroll_to.addEventListener('click', (e) => {
@@ -229,7 +217,7 @@ const SectionObserver = new IntersectionObserver(revealSection, {
 
 AllSections.forEach((section) => {
   SectionObserver.observe(section);
-  // section.classList.add('section--hidden');
+  section.classList.add('section--hidden');
 });
 
 //---- implement lazy images loading :
