@@ -140,21 +140,22 @@ document.querySelector('.operations__tab-container').addEventListener('click', f
 
 //---- implement the fade menu effect :
 
-const handleHover=function(e){
+const handleHover = function(e) {
 
   const hoverElement = e.target;
 
-  if(hoverElement.classList.contains("nav__link")){
-    hoverElement.closest('.nav__links').querySelectorAll('.nav__link').forEach(element=>{
-      if(element!==hoverElement){
-        element.style.opacity=this;
+  if (hoverElement.classList.contains('nav__link')) {
+    hoverElement.closest('.nav__links').querySelectorAll('.nav__link').forEach(element => {
+      if (element !== hoverElement) {
+        element.style.opacity = this;
       }
-      hoverElement.closest('.nav').querySelector('img').style.opacity =this;
-    })
+      hoverElement.closest('.nav').querySelector('img').style.opacity = this;
+    });
   }
 };
 
 // old method 👇🏼 :
+
 {
   // nav.addEventListener('mouseover',function(e){
 //   if(!(e.target.classList.contains('nav__link') || e.target.classList.contains('nav__logo'))) return;
@@ -175,26 +176,26 @@ const handleHover=function(e){
 
 //try it!!=> console.log(handleHover.bind(0.1));
 
-nav.addEventListener('mouseover',handleHover.bind(0.5));
-nav.addEventListener('mouseout',handleHover.bind(1));
-
+nav.addEventListener('mouseover', handleHover.bind(0.5));
+nav.addEventListener('mouseout', handleHover.bind(1));
 
 
 //---- implement sticky nav bar :
 const heightNavBar = nav.getBoundingClientRect().height;
-const callbackObs=(entries)=>{
+const callbackObs = (entries) => {
   const [entry] = entries;
-  if(!entry.isIntersecting) nav.classList.add('sticky');
+  if (!entry.isIntersecting) nav.classList.add('sticky');
   else nav.classList.remove('sticky');
-}
-const optionsObs={
-  root:null,
-  threshold:0,
+};
+const optionsObs = {
+  root: null,
+  threshold: 0,
   rootMargin: `${-heightNavBar}px`
-}
-const observer = new IntersectionObserver(callbackObs,optionsObs);
+};
+const observer = new IntersectionObserver(callbackObs, optionsObs);
 observer.observe(header);
 // old method 👇🏼
+
 {
   // const initialCor = section1.getBoundingClientRect().top;
 // window.addEventListener('scroll',function(){
@@ -212,3 +213,103 @@ observer.observe(header);
 // const observer = new IntersectionObserver(obsFunction,ObsOptions);
 // observer.observe(section1);
 }
+
+//---- implement reveal sections:
+const AllSections = document.querySelectorAll('.section');
+const revealSection = function(entries, observer) {
+  const [entry] = entries;
+  if (!entry.isIntersecting) return;
+  entry.target.classList.remove('section--hidden');
+  observer.unobserve(entry.target);
+};
+const SectionObserver = new IntersectionObserver(revealSection, {
+  root: null,
+  threshold: .2
+});
+
+AllSections.forEach((section) => {
+  SectionObserver.observe(section);
+  // section.classList.add('section--hidden');
+});
+
+//---- implement lazy images loading :
+const lazyImages = section1.querySelectorAll('img');
+
+const LazyCallBack = (entries, observer) => {
+
+  const [entry] = entries;
+  // if(!entry.isIntersecting) return;
+  entry.target.src = entry.target.dataset.src;
+  entry.target.addEventListener('load', function() {
+    this.classList.remove('lazy-img');
+  });
+  observer.unobserve(entry.target);
+
+};
+const LazyObserver = new IntersectionObserver(LazyCallBack, {
+  root: null,
+  threshold: 1,
+  rootMargin: '200px'
+});
+
+lazyImages.forEach(img => {
+  LazyObserver.observe(img);
+});
+
+//---- implement slider component :
+
+const Sliders = document.querySelectorAll('.slide');
+const rightBtn = document.querySelector('.slider__btn--right');
+const leftBtn = document.querySelector('.slider__btn--left');
+const parentsDots = document.querySelector('.dots');
+let curI = 0;
+const createDots = () => {
+  Sliders.forEach((_, i) => {
+    parentsDots.insertAdjacentHTML('beforeend', `<button class='dots__dot' data-slide='${i}'></button>`);
+  });
+};
+const to = (Current) => {
+  Sliders.forEach((slide, index) => {
+    slide.style.transform = `translateX(${(Current - index) * 100}%)`;
+  });
+  changeStyleDots(curI);
+};
+
+const nextSlide = () => {
+  if (curI === Sliders.length - 1) curI = 0;
+  else curI++;
+  to(curI);
+};
+const previousSlide = () => {
+  if (curI === 0) curI = Sliders.length - 1;
+  else curI--;
+
+  to(curI);
+};
+
+const changeStyleDots = (CurrentSlide) => {
+  [...parentsDots.children].forEach((element, i) => {
+    console.log();
+    i === +CurrentSlide && element.classList.add('dots__dot--active');
+    i !== +CurrentSlide && element.classList.remove('dots__dot--active');
+  });
+};
+createDots();
+to(curI);
+
+
+
+rightBtn.addEventListener('click', nextSlide);
+leftBtn.addEventListener('click', previousSlide);
+
+document.addEventListener('keydown', function(e) {
+  (e.keyCode === 37 && previousSlide());
+  (e.keyCode === 39 && nextSlide());
+});
+
+parentsDots.addEventListener('click', function(e) {
+  if (e.target.classList.contains('dots__dot')) {
+    curI = e.target.dataset.slide;
+    to(curI);
+  }
+});

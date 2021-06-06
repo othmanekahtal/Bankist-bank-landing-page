@@ -450,7 +450,7 @@ h4 {
   transition: all 0.5s;
 
   /* Only necessary when overlying images */
-  /* box-shadow: 0 0.6rem 1.5rem rgba(0, 0, 0, 0.7); */
+  /* box-shadow: 0 0.6rem 1.5rem rgba(0, 0, 0, 0.7);*/
 }
 
 .dots__dot:last-child {
@@ -458,7 +458,7 @@ h4 {
 }
 
 .dots__dot--active {
-  /* background-color: #fff; */
+   /*background-color: #fff; */
   background-color: #888;
   opacity: 1;
 }
