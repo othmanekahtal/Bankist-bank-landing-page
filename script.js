@@ -37,10 +37,10 @@ document.addEventListener('keydown', function(e) {
 
 
 btn_scroll_to.addEventListener('click', (e) => {
-// const s1coords = section1.getBoundingClientRect();
-//   console.log(s1coords);
-//   // console.log(s1coords,pageYOffset,pageXOffset);
-//   window.scrollTo(s1coords.x,s1coords.y);
+//const s1coords = section1.getBoundingClientRect();
+//console.log(s1coords);
+//console.log(s1coords,pageYOffset,pageXOffset);
+//window.scrollTo(s1coords.x,s1coords.y);
   section1.scrollIntoView({ behavior: 'smooth' });
 });
 
@@ -210,6 +210,7 @@ const revealSection = function(entries, observer) {
   entry.target.classList.remove('section--hidden');
   observer.unobserve(entry.target);
 };
+
 const SectionObserver = new IntersectionObserver(revealSection, {
   root: null,
   threshold: .2
@@ -224,7 +225,6 @@ AllSections.forEach((section) => {
 const lazyImages = section1.querySelectorAll('img');
 
 const LazyCallBack = (entries, observer) => {
-
   const [entry] = entries;
   // if(!entry.isIntersecting) return;
   entry.target.src = entry.target.dataset.src;
@@ -232,8 +232,8 @@ const LazyCallBack = (entries, observer) => {
     this.classList.remove('lazy-img');
   });
   observer.unobserve(entry.target);
-
 };
+
 const LazyObserver = new IntersectionObserver(LazyCallBack, {
   root: null,
   threshold: 1,
@@ -251,11 +251,13 @@ const rightBtn = document.querySelector('.slider__btn--right');
 const leftBtn = document.querySelector('.slider__btn--left');
 const parentsDots = document.querySelector('.dots');
 let curI = 0;
+
 const createDots = () => {
   Sliders.forEach((_, i) => {
     parentsDots.insertAdjacentHTML('beforeend', `<button class='dots__dot' data-slide='${i}'></button>`);
   });
 };
+
 const to = (Current) => {
   Sliders.forEach((slide, index) => {
     slide.style.transform = `translateX(${(Current - index) * 100}%)`;
@@ -268,10 +270,10 @@ const nextSlide = () => {
   else curI++;
   to(curI);
 };
+
 const previousSlide = () => {
   if (curI === 0) curI = Sliders.length - 1;
   else curI--;
-
   to(curI);
 };
 
@@ -282,10 +284,9 @@ const changeStyleDots = (CurrentSlide) => {
     i !== +CurrentSlide && element.classList.remove('dots__dot--active');
   });
 };
+
 createDots();
 to(curI);
-
-
 
 rightBtn.addEventListener('click', nextSlide);
 leftBtn.addEventListener('click', previousSlide);
